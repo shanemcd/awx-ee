@@ -53,5 +53,5 @@ google-auth  # from collection google.cloud
 openstacksdk>=0.44  # from collection openstack.cloud
 keystoneauth1>=3.4.0  # from collection openstack.cloud
 jsonpatch  # from collection openstack.cloud
-ovirt-engine-sdk-python>=4.4.0  # from collection ovirt.ovirt
+ovirt-engine-sdk-python>=4.4.10  # from collection ovirt.ovirt
 ipaddress  # from collection theforeman.foreman
