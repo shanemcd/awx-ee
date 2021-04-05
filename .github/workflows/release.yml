@@ -1,9 +1,9 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - '**' # Push events to every tag including hierarchical tags like v1.0/beta
+  release:
+    types:
+      - created
 
 jobs:
   release:
@@ -16,6 +16,24 @@ jobs:
         with:
           python-version: "3.8"
 
-      - name: Print env
+      - name: Install dependencies
         run: |
-          env
+          python -m pip install --upgrade pip
+          pip install tox
+
+      - name: Build image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: |
+          # tox -e docker -- --tag=quay.io/shanemcd/awx-ee:${{ github.event.release.tag_name }}
+          docker pull quay.io/shanemcd/awx-ee
+          docker tag quay.io/shanemcd/awx-ee quay.io/shanemcd/awx-ee:${{ github.event.release.tag_name }}
+
+      - name: Push To Quay
+        uses: redhat-actions/push-to-registry@v2.1.1
+        with:
+          image: quay.io/shanemcd/awx-ee
+          tags: ${{ github.event.release.tag_name }}
+          registry: quay.io/shanemcd/
+          username: ${{ secrets.QUAY_USERNAME }}
+          password: ${{ secrets.QUAY_TOKEN }}
