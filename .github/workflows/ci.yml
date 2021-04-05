@@ -25,7 +25,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install tox
 
-      - name: Run
+      - name: Build EE with Podman
         run: |
           tox -e podman
 
@@ -44,13 +44,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install tox
 
-      - name: Run
+      - name: Build EE with Docker
+        env:
+          DOCKER_BUILDKIT: 1
         run: |
           tox -e docker
 
   check_diff:
     runs-on: ubuntu-20.04
-    name: Check diff
+    name: Ensure build context is up-to-date
     steps:
       - uses: actions/checkout@v2
 
@@ -64,5 +66,7 @@ jobs:
           pip install tox
 
       - name: Run
+        env:
+          DOCKER_BUILDKIT: 1
         run: |
           tox -e check-diff
