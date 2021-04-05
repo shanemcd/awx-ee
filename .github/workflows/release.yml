@@ -1,0 +1,21 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '**' # Push events to every tag including hierarchical tags like v1.0/beta
+
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    name: Release
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+
+      - name: Print env
+        run: |
+          env
