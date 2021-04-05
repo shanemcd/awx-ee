@@ -18,4 +18,4 @@ jobs:
 
       - name: Print env
         run: |
-          env
+          echo $(git describe --tags)
